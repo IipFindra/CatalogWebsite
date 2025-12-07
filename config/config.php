@@ -8,11 +8,32 @@ $scriptDir = dirname($_SERVER['SCRIPT_NAME']);
 $scriptDir = str_replace('\\', '/', $scriptDir); // Normalize for Windows
 define('BASE_URL', rtrim((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $scriptDir, '/') . '/');
 
-// Database credentials (placeholder values)
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'catalogue_db');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// Database connection
+// Check for DATABASE_URL (Railway/Heroku standard)
+if ($databaseUrl = getenv('DATABASE_URL')) {
+    $dbConfig = parse_url($databaseUrl);
+    define('DB_HOST', $dbConfig['host']);
+    define('DB_NAME', ltrim($dbConfig['path'], '/'));
+    define('DB_USER', $dbConfig['user']);
+    define('DB_PASS', $dbConfig['pass']);
+    define('DB_PORT', $dbConfig['port'] ?? 3306);
+} 
+// Check for individual env vars (Railway Managed MySQL specific)
+elseif (getenv('MYSQLHOST')) {
+    define('DB_HOST', getenv('MYSQLHOST'));
+    define('DB_NAME', getenv('MYSQLDATABASE'));
+    define('DB_USER', getenv('MYSQLUSER'));
+    define('DB_PASS', getenv('MYSQLPASSWORD'));
+    define('DB_PORT', getenv('MYSQLPORT') ?? 3306);
+}
+// Fallback to standard DB_ env vars or localhost
+else {
+    define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+    define('DB_NAME', getenv('DB_NAME') ?: 'catalogue_db');
+    define('DB_USER', getenv('DB_USER') ?: 'root');
+    define('DB_PASS', getenv('DB_PASS') ?: '');
+    define('DB_PORT', getenv('DB_PORT') ?: 3306);
+}
 
 // Autoloader for App and Core namespaces
 spl_autoload_register(function ($class) {
