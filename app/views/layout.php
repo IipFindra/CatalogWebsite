@@ -74,9 +74,9 @@ $cartCount = isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
             <div class="footer-contact">
                 <h4>Hubungi Kami</h4>
                 <ul>
-                    <li>hello@penapedia.com</li>
-                    <li>+62 812 3456 7890</li>
-                    <li>Jakarta, Indonesia</li>
+                    <li>auliafinannisa@gmail.com</li>
+                    <li>+62 896 2998 9477</li>
+                    <li>Sekaran, Gunungpati, Jawa Tengah, 50229</li>
                 </ul>
             </div>
         </div>
