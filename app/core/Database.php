@@ -21,7 +21,7 @@ class Database {
                 ]
             );
         } catch (PDOException $e) {
-            die("Database connection failed: " . $e->getMessage());
+            die("Database connection failed: " . $e->getMessage() . " (Host: " . DB_HOST . ", Port: " . DB_PORT . ")");
         }
     }
 
