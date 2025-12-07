@@ -23,13 +23,17 @@ try {
     }
     $sql = file_get_contents($schemaFile);
     
-    // 3. Execute SQL (Split by semicolons to handle multiple statements if PDO doesn't automatically)
-    // Note: PDO can often execute multiple queries, but specific drivers might differ. 
-    // It's safer to execute as one block if supported, or split.
-    // For simplicity, we'll try executing the whole block first.
+    // 3. Execute SQL (Split by semicolons)
+    // PDO typically supports only one statement per prepare/execute by default.
+    // We strictly split by semicolon and trim.
     
-    $stmt = $db->prepare($sql);
-    $stmt->execute();
+    $statements = array_filter(array_map('trim', explode(';', $sql)));
+
+    foreach ($statements as $stmtSql) {
+        if (!empty($stmtSql)) {
+            $db->exec($stmtSql); // exec() is better for simple queries than prepare/execute here
+        }
+    }
     
     echo "<p>✅ Schema executed successfully!</p>";
     echo "<p><strong>Tables created/updated. You can now delete this file and use your application.</strong></p>";
