@@ -1,6 +1,14 @@
 -- SQL Schema for Catalogue Database
 -- Database: catalogue_db
 
+-- Disable foreign key checks for dropping tables
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS `product_images`;
+DROP TABLE IF EXISTS `products`;
+DROP TABLE IF EXISTS `categories`;
+DROP TABLE IF EXISTS `contacts`;
+SET FOREIGN_KEY_CHECKS = 1;
+
 -- Categories Table
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -64,27 +72,32 @@ CREATE TABLE IF NOT EXISTS `contacts` (
   KEY `idx_created` (`created_at`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Sample Categories
-INSERT INTO `categories` (`name`, `slug`, `description`) VALUES
-('Electronics', 'electronics', 'Electronic devices and gadgets'),
-('Fashion', 'fashion', 'Clothing and fashion accessories'),
-('Home', 'home', 'Home furniture and decor'),
-('Accessories', 'accessories', 'Various accessories');
+-- Categories Data (From Screenshot)
+INSERT INTO `categories` (`id`, `name`, `slug`, `description`) VALUES
+(2, 'Alat Tulis & Perlengkapan', 'alat-tulis-perlengkapan', 'Kategori alat tulis dan perlengkapan sekolah/kantor');
 
--- Sample Products
-INSERT INTO `products` (`category_id`, `name`, `slug`, `short_description`, `description`, `price`, `sku`, `status`) VALUES
-(1, 'Wireless Headphones Pro', 'wireless-headphones-pro', 'Premium wireless headphones with noise cancellation', 'High-quality wireless headphones featuring active noise cancellation, 30-hour battery life, and premium sound quality.', 1499000.00, 'WH-PRO-001', 'active'),
-(4, 'Minimalist Watch', 'minimalist-watch', 'Elegant minimalist design watch', 'Sleek and stylish minimalist watch with premium leather strap and Japanese movement.', 2199000.00, 'MW-001', 'active'),
-(2, 'Premium Backpack', 'premium-backpack', 'Stylish and functional backpack', 'Durable backpack with multiple compartments, laptop sleeve, and water-resistant material.', 899000.00, 'BP-001', 'active'),
-(1, 'Smart Speaker', 'smart-speaker', 'Voice-controlled smart speaker', 'AI-powered smart speaker with premium audio and smart home integration.', 1299000.00, 'SS-001', 'active'),
-(3, 'Leather Sofa', 'leather-sofa', 'Modern leather sofa for living room', 'Comfortable 3-seater leather sofa with contemporary design and premium materials.', 8999000.00, 'LS-001', 'active'),
-(4, 'Leather Wallet', 'leather-wallet', 'Genuine leather wallet with card slots', 'Handcrafted genuine leather wallet with RFID protection and multiple card slots.', 599000.00, 'LW-001', 'active');
+-- Products Data (From Screenshot)
+INSERT INTO `products` (`id`, `category_id`, `name`, `slug`, `short_description`, `description`, `price`, `status`, `created_at`, `updated_at`) VALUES
+(12, 2, 'Correction Tape Warna Pastel', 'correction-tape-warna-pastel', 'Correction tape warna pastel', NULL, 7000.00, 'published', '2025-12-06 09:24:25', '2025-12-06 09:24:25'),
+(13, 2, 'Bolpoin Karakter Lucu', 'bolpoin-karakter-lucu', 'Bolpoin karakter lucu', NULL, 5000.00, 'published', '2025-12-06 09:24:25', '2025-12-06 09:24:25'),
+(14, 2, 'Map Folder Dokumen A4', 'map-folder-dokumen-a4', 'Folder dokumen ukuran A4', NULL, 20000.00, 'published', '2025-12-06 09:24:25', '2025-12-06 09:24:25'),
+(15, 2, 'Set 12 Highlighter Warna Pastel', 'set-12-highlighter-warna-pastel', 'Set 12 highlighter pastel', NULL, 15000.00, 'published', '2025-12-06 09:24:25', '2025-12-06 09:24:25'),
+(16, 2, 'Notebook Karakter A5', 'notebook-karakter-a5', 'Notebook ukuran A5 dengan karakter lucu', NULL, 5000.00, 'published', '2025-12-06 09:24:25', '2025-12-06 09:24:25'),
+(17, 2, 'Set 6 Sticky Notes Karakter Lucu', 'set-6-sticky-notes-karakter-lucu', 'Sticky notes karakter lucu isi 6', NULL, 7000.00, 'published', '2025-12-06 09:24:25', '2025-12-06 09:24:25'),
+(18, 2, 'Paper Clips Warna Pastel', 'paper-clips-warna-pastel', 'Klip kertas warna pastel', NULL, 5000.00, 'published', '2025-12-06 09:24:25', '2025-12-06 09:24:25'),
+(19, 2, 'Set 4 Penggaris Bening', 'set-4-penggaris-bening', 'Set 4 penggaris bening', NULL, 20000.00, 'published', '2025-12-06 09:24:25', '2025-12-06 09:24:25'),
+(20, 2, 'Stapler Mini', 'stapler-mini', 'Stapler ukuran mini', NULL, 10000.00, 'published', '2025-12-06 09:24:25', '2025-12-06 09:24:25'),
+(21, 2, 'Gunting Warna Pastel Aesthetic', 'gunting-warna-pastel-aesthetic', 'Gunting warna pastel aesthetic', NULL, 7000.00, 'published', '2025-12-06 09:24:25', '2025-12-06 09:24:25');
 
--- Sample Product Images
-INSERT INTO `product_images` (`product_id`, `image_url`, `alt_text`, `is_primary`) VALUES
-(1, 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop', 'Wireless Headphones Pro', 1),
-(2, 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop', 'Minimalist Watch', 1),
-(3, 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=300&fit=crop', 'Premium Backpack', 1),
-(4, 'https://images.unsplash.com/photo-1543512214-318c7553f230?w=400&h=300&fit=crop', 'Smart Speaker', 1),
-(5, 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&h=300&fit=crop', 'Leather Sofa', 1),
-(6, 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=400&h=300&fit=crop', 'Leather Wallet', 1);
+-- Product Images Data (From Screenshot)
+INSERT INTO `product_images` (`id`, `product_id`, `image_url`, `is_primary`) VALUES
+(2, 12, 'uploads/products/tape.jpeg', 1),
+(3, 13, 'uploads/products/bolpoin.jpeg', 1),
+(4, 14, 'uploads/products/mapfolder.jpeg', 1),
+(7, 15, 'uploads/products/highlighter.jpeg', 1),
+(8, 16, 'uploads/products/notebook.jpeg', 1),
+(9, 17, 'uploads/products/stickynotes.jpeg', 1),
+(10, 18, 'uploads/products/paperclips.jpeg', 1),
+(11, 19, 'uploads/products/penggaris.jpeg', 1),
+(12, 20, 'uploads/products/staplermini.jpeg', 1),
+(13, 21, 'uploads/products/gunting.jpeg', 1);

@@ -6,7 +6,10 @@
 // Base URL (adjust if the app resides in a subdirectory)
 $scriptDir = dirname($_SERVER['SCRIPT_NAME']);
 $scriptDir = str_replace('\\', '/', $scriptDir); // Normalize for Windows
-define('BASE_URL', rtrim((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $scriptDir, '/') . '/');
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || 
+            (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') 
+            ? 'https' : 'http';
+define('BASE_URL', rtrim($protocol . '://' . $_SERVER['HTTP_HOST'] . $scriptDir, '/') . '/');
 
 // Database connection
 // Check for DATABASE_URL (Railway/Heroku standard)
