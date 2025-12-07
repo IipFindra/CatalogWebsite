@@ -18,12 +18,12 @@ function getLocation() {
     const btn = event.target.closest('.btn-location');
 
     if (!navigator.geolocation) {
-        alert('Geolocation is not supported by your browser');
+        alert('Geolokasi tidak didukung oleh browser Anda');
         return;
     }
 
     btn.disabled = true;
-    btn.innerHTML = '<span>Getting location...</span>';
+    btn.innerHTML = '<span>Sedang mencari lokasi...</span>';
 
     navigator.geolocation.getCurrentPosition(
         async (position) => {
@@ -42,25 +42,25 @@ function getLocation() {
                 btn.disabled = false;
                 btn.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                </svg> Use My Location`;
+                </svg> Gunakan Lokasi Saya`;
 
-                showNotification('Location added successfully!', 'success');
+                showNotification('Lokasi berhasil ditambahkan!', 'success');
             } catch (error) {
                 console.error('Geocoding error:', error);
-                addressField.value = `Coordinates: ${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+                addressField.value = `Koordinat: ${lat.toFixed(6)}, ${lon.toFixed(6)}`;
                 btn.disabled = false;
                 btn.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                </svg> Use My Location`;
+                </svg> Gunakan Lokasi Saya`;
             }
         },
         (error) => {
             console.error('Geolocation error:', error);
-            alert('Unable to get your location. Please enter manually.');
+            alert('Tidak dapat mengambil lokasi Anda. Silakan masukkan secara manual.');
             btn.disabled = false;
             btn.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-            </svg> Use My Location`;
+            </svg> Gunakan Lokasi Saya`;
         }
     );
 }
@@ -83,13 +83,13 @@ function processCheckout(event) {
     }
 
     // Build WhatsApp message
-    let message = `*NEW ORDER*\n\n`;
-    message += `*Customer Details:*\n`;
-    message += `Name: ${name}\n`;
-    message += `Phone: ${phone}\n`;
-    message += `Address: ${address}\n\n`;
+    let message = `*PESANAN BARU*\n\n`;
+    message += `*Detail Pelanggan:*\n`;
+    message += `Nama: ${name}\n`;
+    message += `No. HP: ${phone}\n`;
+    message += `Alamat: ${address}\n\n`;
 
-    message += `*Order Items:*\n`;
+    message += `*Item Pesanan:*\n`;
     message += `================================\n`;
 
     let total = 0;
@@ -97,19 +97,19 @@ function processCheckout(event) {
         const itemTotal = item.price * item.quantity;
         total += itemTotal;
         message += `${index + 1}. *${item.title}*\n`;
-        message += `   Qty: ${item.quantity} x Rp ${formatPrice(item.price)}\n`;
+        message += `   Jml: ${item.quantity} x Rp ${formatPrice(item.price)}\n`;
         message += `   Subtotal: Rp ${formatPrice(itemTotal)}\n\n`;
     });
 
     message += `================================\n`;
     message += `*TOTAL: Rp ${formatPrice(total)}*\n`;
-    message += `Shipping: FREE\n\n`;
+    message += `Pengiriman: GRATIS\n\n`;
 
     if (notes) {
-        message += `*Notes:* ${notes}\n\n`;
+        message += `*Catatan:* ${notes}\n\n`;
     }
 
-    message += `Thank you for your order!`;
+    message += `Terima kasih atas pesanan Anda!`;
 
     // Encode message for URL
     const encodedMessage = encodeURIComponent(message);
