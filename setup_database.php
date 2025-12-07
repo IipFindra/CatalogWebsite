@@ -24,16 +24,25 @@ try {
     $sql = file_get_contents($schemaFile);
     
     // 3. Execute SQL (Split by semicolons)
-    // PDO typically supports only one statement per prepare/execute by default.
-    // We strictly split by semicolon and trim.
-    
     $statements = array_filter(array_map('trim', explode(';', $sql)));
-
-    foreach ($statements as $stmtSql) {
+    
+    echo "<ul>";
+    foreach ($statements as $i => $stmtSql) {
         if (!empty($stmtSql)) {
-            $db->exec($stmtSql); // exec() is better for simple queries than prepare/execute here
+            echo "<li>Executing statement #" . ($i + 1) . "... ";
+            try {
+                $db->exec($stmtSql);
+                echo "<strong style='color:green'>OK</strong></li>";
+            } catch (PDOException $e) {
+                echo "<strong style='color:red'>FAILED</strong>: " . htmlspecialchars($e->getMessage()) . "</li>";
+                // Don't stop on drop error, but stop on create errors potentially.
+                // For now, let's just log and continue to see full picture, or re-throw?
+                // Re-throwing is safer to avoid partial state.
+                throw $e;
+            }
         }
     }
+    echo "</ul>";
     
     echo "<p>✅ Schema executed successfully!</p>";
     echo "<p><strong>Tables created/updated. You can now delete this file and use your application.</strong></p>";
